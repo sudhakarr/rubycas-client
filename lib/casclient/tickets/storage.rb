@@ -28,12 +28,8 @@ module CASClient
         def get_session_for_service_ticket(st)
           session_id = read_service_session_lookup(st)
           unless session_id.nil?
-            begin
-              # This feels a bit hackish, but there isn't really a better way to go about it that I am aware of yet
-              session = ActiveRecord::SessionStore.session_class.find_by_session_id(session_id)
-            rescue ActiveRecord::StatementInvalid
-              log.info("ActiveRecord SessionStore is not used")
-            end
+            # This feels a bit hackish, but there isn't really a better way to go about it that I am aware of yet
+            session = ActiveRecord::SessionStore.session_class.find_by_session_id(session_id)
           else
             log.warn("Couldn't destroy session service ticket #{st} because no corresponding session id could be found.")
           end
